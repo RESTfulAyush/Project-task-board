@@ -5,8 +5,8 @@ import mongoose from "mongoose";
 import cors from "cors";
 
 dotenv.config();
-const URI = "mongodb://localhost:27017";
-// const URI = "mongodb://mongodb:27017";
+// const URI = "mongodb://localhost:27017";
+const URI = "mongodb://mongodb:27017";
 mongoose.connect(
   URI,
   () => {
