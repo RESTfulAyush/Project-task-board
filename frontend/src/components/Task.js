@@ -1,13 +1,12 @@
 import React, { useEffect, useState, useRef } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { v4 as uuid } from "uuid";
+import { useParams, useNavigate } from "react-router";
+import axios from "axios";
+import toast from "react-hot-toast";
 import AddTaskModal from "./AddTaskModal";
 import BtnPrimary from "./BtnPrimary";
 import DropdownMenu from "./DropdownMenu";
-import { useParams, useNavigate } from "react-router";
 import ProjectDropdown from "./ProjectDropdown";
-import axios from "axios";
-import toast from "react-hot-toast";
 import TaskModal from "./TaskModal";
 
 function Task() {
@@ -22,32 +21,30 @@ function Task() {
   const dragRef = useRef(null);
 
   useEffect(() => {
-    if (!isAddTaskModalOpen || isRenderChange) {
-      axios.get(`http://localhost:9000/project/${projectId}`).then((res) => {
-        setTitle(res.data[0].title);
-        setColumns({
-          todo: {
-            name: "To do",
-            items: res.data[0].task
-              .filter((task) => task.stage === "To do")
-              .sort((a, b) => a.order - b.order),
-          },
-          inProgress: {
-            name: "In Progress",
-            items: res.data[0].task
-              .filter((task) => task.stage === "In Progress")
-              .sort((a, b) => a.order - b.order),
-          },
-          done: {
-            name: "Done",
-            items: res.data[0].task
-              .filter((task) => task.stage === "Done")
-              .sort((a, b) => a.order - b.order),
-          },
-        });
-        setRenderChange(false);
+    axios.get(`http://localhost:9000/project/${projectId}`).then((res) => {
+      setTitle(res.data[0].title);
+      setColumns({
+        todo: {
+          name: "To do",
+          items: res.data[0].task
+            .filter((task) => task.stage === "To do")
+            .sort((a, b) => a.order - b.order),
+        },
+        inProgress: {
+          name: "In Progress",
+          items: res.data[0].task
+            .filter((task) => task.stage === "In Progress")
+            .sort((a, b) => a.order - b.order),
+        },
+        done: {
+          name: "Done",
+          items: res.data[0].task
+            .filter((task) => task.stage === "Done")
+            .sort((a, b) => a.order - b.order),
+        },
       });
-    }
+      setRenderChange(false);
+    });
   }, [projectId, isAddTaskModalOpen, isRenderChange]);
 
   const onDragEnd = (result) => {
@@ -92,6 +89,13 @@ function Task() {
     setTaskOpen(true);
   };
 
+  // Priority-based styles
+  const priorityStyles = {
+    High: "border-red-00 bg-red-50 text-red-800",
+    Medium: "border-yellow-500 bg-yellow-50 text-yellow-800",
+    Low: "border-green-500 bg-green-50 text-green-800",
+  };
+
   return (
     <div className="px-8 py-6 w-full bg-gray-50 min-h-screen">
       <div className="flex items-center justify-between mb-8 border-b pb-4 border-gray-200">
@@ -101,7 +105,7 @@ function Task() {
           </span>
           <ProjectDropdown id={projectId} navigate={navigate} />
         </h1>
-        <BtnPrimary onClick={() => setAddTaskModal(true)}>Add todo</BtnPrimary>
+        <BtnPrimary onClick={() => setAddTaskModal(true)}>Add Task</BtnPrimary>
       </div>
 
       <DragDropContext onDragEnd={onDragEnd}>
@@ -152,10 +156,12 @@ function Task() {
                             ref={provided.innerRef}
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
-                            className={`bg-white border border-gray-200 rounded-lg shadow-sm p-4 mb-4 
-                              transform transition-all hover:shadow-md ${
-                                snapshot.isDragging ? "shadow-lg scale-105" : ""
-                              }`}
+                            className={`border-l-4 p-4 mb-4 rounded-lg shadow-md transition-all hover:shadow-lg transform ${
+                              snapshot.isDragging ? "scale-105" : ""
+                            } ${
+                              priorityStyles[item.priority] ||
+                              "border-gray-300 bg-gray-100"
+                            }`}
                             onClick={() => handleTaskDetails(item._id)}
                           >
                             <div className="flex justify-between items-start mb-2">
@@ -176,9 +182,19 @@ function Task() {
                                 ? `${item.description.slice(0, 60)}...`
                                 : item.description}
                             </p>
-                            <span className="inline-block bg-indigo-100 text-indigo-600 px-2 py-1 rounded-md text-xs font-medium">
-                              Task-{item.index}
-                            </span>
+                            <div className="flex justify-between items-center">
+                              <span
+                                className={`px-2 py-1 rounded-md text-xs font-medium ${
+                                  priorityStyles[item.priority] ||
+                                  "bg-gray-200 text-gray-700"
+                                }`}
+                              >
+                                {item.priority} Priority
+                              </span>
+                              <span className="text-xs text-gray-500">
+                                Task-{index + 1}
+                              </span>
+                            </div>
                           </div>
                         )}
                       </Draggable>
