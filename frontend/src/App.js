@@ -37,9 +37,7 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen p-8 bg-gradient-to-r from-white to-gray-300 relative">
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-50 via-blue-100 to-indigo-100 opacity-20 blur-md"></div>
-
+    <div className="min-h-screen p-8 bg-gradient-to-r from-white to-gray-250 relative">
       <Toaster position="top-right" gutter={8} />
       <Routes>
         <Route path="/:projectId" element={<Task />} />

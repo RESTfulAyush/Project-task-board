@@ -165,7 +165,6 @@ api.get("/project/:id/task/:taskId", async (req, res) => {
   if (!req.params.id || !req.params.taskId)
     return res.status(500).send(`server error`);
 
-  // res.send(req.params)
   try {
     let data = await Project.find(
       { _id: mongoose.Types.ObjectId(req.params.id) },
@@ -205,22 +204,6 @@ api.put("/project/:id/task/:taskId", async (req, res) => {
   if (error) return res.status(422).send(error);
 
   try {
-    // const data = await Project.find({ $and: [{ _id: mongoose.Types.ObjectId(req.params.id) }, { "task._id": mongoose.Types.ObjectId(req.params.taskId) }] },{
-    //     task: {
-    //         $filter: {
-    //             input: "$task",
-    //             as: "task",
-    //             cond: {
-    //                 $in: [
-    //                     "$$task._id",
-    //                     [
-    //                         mongoose.Types.ObjectId(req.params.taskId)
-    //                     ]
-    //                 ]
-    //             }
-    //         }
-    //     }
-    // })
     const data = await Project.updateOne(
       {
         _id: mongoose.Types.ObjectId(req.params.id),
@@ -283,23 +266,5 @@ api.put("/project/:id/todo", async (req, res) => {
 
   res.send(todo);
 });
-
-// api.use('/project/:id/task', async (req, res, next) => {
-//     if (req.method !== "GET") return next()
-
-//     if (!req.params.id) return res.status(500).send(`server error`);
-
-//     try {
-//         const data = await Project.find({ _id: mongoose.Types.ObjectId(req.params.id) }, { task: 1 })
-//         return res.send(data)
-//     } catch (error) {
-//         return res.send(error)
-//     }
-
-// })
-
-// api.get('/project/:id/task/:taskId', (req, res) => {
-//     res.send(req.params)
-// })
 
 export default api;

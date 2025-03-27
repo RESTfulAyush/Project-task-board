@@ -18,7 +18,6 @@ function Task() {
   const [title, setTitle] = useState("");
   const { projectId } = useParams();
   const navigate = useNavigate();
-  const dragRef = useRef(null);
 
   useEffect(() => {
     axios.get(`http://localhost:9000/project/${projectId}`).then((res) => {
@@ -105,7 +104,14 @@ function Task() {
           </span>
           <ProjectDropdown id={projectId} navigate={navigate} />
         </h1>
-        <BtnPrimary onClick={() => setAddTaskModal(true)}>Add Task</BtnPrimary>
+        <BtnPrimary
+          onClick={() => {
+            console.log("Opening modal:", true);
+            setAddTaskModal(true);
+          }}
+        >
+          Add Task
+        </BtnPrimary>
       </div>
 
       <DragDropContext onDragEnd={onDragEnd}>

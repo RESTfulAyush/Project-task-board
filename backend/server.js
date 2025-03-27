@@ -5,10 +5,12 @@ import mongoose from "mongoose";
 import cors from "cors";
 
 dotenv.config();
+const URI = "mongodb://localhost:27017";
+// const URI = "mongodb://mongodb:27017";
 mongoose.connect(
-  process.env.MONGODB_PATH,
+  URI,
   () => {
-    console.log("connect");
+    console.log("Connected to MongoDB");
   },
   (e) => console.log(e)
 );
@@ -24,10 +26,11 @@ app.use(
   })
 );
 app.use(express.json());
-app.use(express.urlencoded());
+// app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: false }));
 
 app.use(api);
 
 app.listen(PORT, () => {
-  console.log(`Your app is running in http://localhost:${PORT}`);
+  console.log(`Your app is running at http://localhost:${PORT}`);
 });
