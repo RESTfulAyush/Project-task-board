@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { useNavigate, useLocation } from "react-router-dom"; // Import useLocation
+import { useNavigate, useLocation } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { Routes, Route } from "react-router-dom";
 import axios from "axios";
@@ -37,14 +37,16 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
+    <div className="min-h-screen p-8 bg-gradient-to-r from-white to-gray-300 relative">
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-50 via-blue-100 to-indigo-100 opacity-20 blur-md"></div>
+
       <Toaster position="top-right" gutter={8} />
       <Routes>
         <Route path="/:projectId" element={<Task />} />
         <Route
           path="/"
           element={
-            <div className="container mx-auto">
+            <div className="container mx-auto relative z-10">
               <div className="flex justify-between items-center mb-10">
                 <h1 className="text-3xl font-bold text-gray-900">
                   Your Projects
