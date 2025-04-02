@@ -1,7 +1,7 @@
 # Project Task Board
 
 ## Overview
-Project Task Board is a personalized task management application built using the MERN stack (MongoDB, Express.js, React, and Node.js). This application helps users manage multiple projects efficiently by allowing them to create tasks, assign members, track progress, and streamline their workflow.
+Project Task Board is a personalized task management application built using the MERN stack (MongoDB, Express.js, React, and Node.js). This application helps users manage multiple projects efficiently by allowing them to create tasks, track progress, and streamline their workflow.
 
 ## Features
 - **Project Management**: Create, update, and delete projects.
