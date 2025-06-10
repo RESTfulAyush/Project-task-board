@@ -10,7 +10,7 @@ function App() {
   const [projects, setProjects] = useState([]);
   const [isModalOpen, setModalState] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation(); // Hook to track route changes
+  const location = useLocation();
 
   // Fetch projects from the backend
   const fetchProjects = useCallback(() => {
